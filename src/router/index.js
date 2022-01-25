@@ -21,4 +21,11 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach(function (to, from, next) {
+  if (to.meta.title) {
+    Vue.refreshTitle(to.meta.title);
+  }
+  next();
+});
+
 export default router
