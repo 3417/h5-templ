@@ -1,7 +1,7 @@
 {
   "name": "{{name}}",
   "version": "{{version}}",
-  "description":"{{description}}"
+  "description":"{{description}}",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
