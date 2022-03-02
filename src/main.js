@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import request from '@/service/index'
 import refreshTitle from '@/assets/js/refreshTitle'
+import '@/assets/js/rem'
 Vue.use(refreshTitle);
 Vue.prototype.$request = request;
 
