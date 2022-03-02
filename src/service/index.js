@@ -9,8 +9,8 @@ axios.defaults.timeout = 50000;
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 axios.interceptors.request.use(
   config => {
-    config.headers["RefererRedirectURL"] = location.href;  //TODO:业务需要
-    config.headers["RefererRedirect"] = "scfans";
+    // config.headers["RefererRedirectURL"] = location.href;  //TODO:业务需要
+    // config.headers["RefererRedirect"] = "scfans";
     return config;
   }
 );

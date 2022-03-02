@@ -9,17 +9,19 @@ const plugins = []
 if (process.env.NODE_ENV === 'production') {
   plugins.push(
     new FileManagerPlugin({ //初始化 filemanager-webpack-plugin 插件实例
-      onEnd: {
-        delete: [ //首先需要删除项目根目录下的dist.zip
-          './h5_templ.zip',
-        ],
-        archive: [ //然后我们选择dist文件夹将之打包成dist.zip并放在根目录
-          {
-            source: './h5_templ',
-            destination: './h5_templ.zip',
-            format: 'zip'
-          },
-        ]
+      events:{
+        onEnd: {
+          delete: [ //首先需要删除项目根目录下的dist.zip
+            './h5_templ.zip',
+          ],
+          archive: [ //然后我们选择dist文件夹将之打包成dist.zip并放在根目录
+            {
+              source: './h5_templ',
+              destination: './h5_templ.zip',
+              format: 'zip'
+            },
+          ]
+        }
       }
     }))
 }
@@ -49,6 +51,10 @@ module.exports = {
       .set('@static', resolve('src/static'))
       .set('@views', resolve('src/views'))
     config.module.rules.delete('eslint');
+    config.plugin('html').tap(args=>{
+      args[0].title = '首页'
+      return args
+    })
   },
   devServer: {
     open: true,
