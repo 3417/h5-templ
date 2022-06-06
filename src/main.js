@@ -4,7 +4,9 @@ import router from './router'
 import store from './store'
 import request from '@/service/index'
 import refreshTitle from '@/assets/js/refreshTitle'
-import '@/assets/js/rem'
+import Vant from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Vant);
 Vue.use(refreshTitle);
 Vue.prototype.$request = request;
 
