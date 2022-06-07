@@ -6,6 +6,8 @@ import request from '@/service/index'
 import refreshTitle from '@/assets/js/refreshTitle'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import directivePlugins from './utils/directive';
+Vue.use(directivePlugins);
 Vue.use(Vant);
 Vue.use(refreshTitle);
 Vue.prototype.$request = request;

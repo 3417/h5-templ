@@ -17,14 +17,17 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    const code = response.data.code || response.data.code === 0 ? response.data.code : response.data.errCode;
-    if (0 !== code && 302 != code) {
-      Toast(response.data.msg);
-      return Promise.reject(response.data);
-    } else if(302 == code){
-        location.href = response.data.msg;
-    }else{
-      return response.data;
+    // 与后台约定code码
+    const code = response.data.code ? response.data.code : response.data.errCode;
+    switch(code){
+      case 0:
+        return response.data;
+      case 302:
+        location.href= response.data.msg;
+        break;
+      default:
+        Toast(response.data.msg);
+        return Promise.reject(response.data);
     }
   },
   error => {
