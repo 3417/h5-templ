@@ -22,3 +22,8 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### 安装依赖（yarn 出现版本问题）
+```
+yarn config set ignore-engines true
+```
