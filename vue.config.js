@@ -8,7 +8,7 @@ function resolve(dir) {
 module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave: false,
-  publicPath: "/",
+  publicPath: "./",
   assetsDir: "static",
   css: {
     sourceMap: true,
