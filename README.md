@@ -27,3 +27,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 yarn config set ignore-engines true
 ```
+
+
+### .env文件配置
+1. package.json重如果没有配置类似.env.dev这种别名的话(默认配置是:.env.development)
+2. .env文件默认配置是VUE_APP_xxxx开头
