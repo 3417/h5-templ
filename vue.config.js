@@ -18,6 +18,11 @@ module.exports = defineConfig({
       }
     }
   },
+  configureWebpack:(config)=>{
+    config.optimization = {
+      nodeEnv:false
+    }
+  },
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))
