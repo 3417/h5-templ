@@ -32,3 +32,6 @@ yarn config set ignore-engines true
 ### .env文件配置
 1. package.json重如果没有配置类似.env.dev这种别名的话(默认配置是:.env.development)
 2. .env文件默认配置是VUE_APP_xxxx开头
+### 关于vw换算问题
+1. 设计稿为375  换算为  1vw = 3.75px;
+2. 设计稿为750 换算为 1vw = 7.5px;
