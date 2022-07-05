@@ -14,7 +14,7 @@ module.exports = defineConfig({
     sourceMap: true,
     loaderOptions: {
       sass: {
-        prependData: `@import "~@/assets/styles/index.scss";`
+        prependData: `@import "~@/assets/styles/var.scss";`
       }
     }
   },
