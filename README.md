@@ -35,3 +35,9 @@ yarn config set ignore-engines true
 ### 关于vw换算问题
 1. 设计稿为375  换算为  1vw = 3.75px;
 2. 设计稿为750 换算为 1vw = 7.5px;
+
+```
+动态计算
+let scale = window.screen.width / 750  //计算缩放比
+((设置的像素单位 * scale) * 2).toFixed(2) + 'px';
+```
