@@ -2,6 +2,7 @@
   <div class="home">
     <h2>{{msg}}</h2>
     {{ userInfo?.name }}
+    <van-button type="primary">test</van-button>
   </div>
 </template>
 

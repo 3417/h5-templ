@@ -9,14 +9,14 @@ module.exports = ({ file }) => {
       "postcss-px-to-viewport": {
         unitToConvert: "px",
         viewportWidth: designWidth,
-        unitPrecision: 3,
+        unitPrecision: 6,
         propList: ["*"],
         viewportUnit: "vw",
         fontViewportUnit: "vw",
         selectorBlackList: [],
         minPixelValue: 1,
         mediaQuery: true,
-        exclude: [],
+        exclude: /(node_modules)/,
         landscape: false
       }
     }
