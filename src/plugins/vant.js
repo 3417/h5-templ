@@ -1,3 +1,3 @@
 import Vue from 'vue'
-import {Button } from 'vant';
-Vue.use(Button);
+import {Button,List} from 'vant';
+Vue.use(Button).use(List);
