@@ -15,12 +15,35 @@ const fixed = {
   },
 }
 
-const Plugin = {
-    fixed
+const eruda = {
+  inserted(el, binding, vnode) {
+    const setEruda = () => {
+      binding.value--;
+      if (window.eruda) { return };
+      if (binding.value === 0) {
+        let head = document.getElementsByTagName('head')[0];
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onload = script.onreadystatechange = function () {
+          if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+            eruda && eruda.init();
+          }
+        };
+        script.src = '//cdn.jsdelivr.net/npm/eruda';
+        head.appendChild(script);
+      }
+    }
+    el.addEventListener("click", setEruda,false);
+  }
 }
 
-export default (app)=>{
-    Object.keys(Plugin).forEach(item=>{
-        app.directive(item,Plugin[item]);
-    })
+const Plugin = {
+  fixed,
+  eruda
+}
+
+export default (app) => {
+  Object.keys(Plugin).forEach(item => {
+    app.directive(item, Plugin[item]);
+  })
 }
