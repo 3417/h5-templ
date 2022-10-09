@@ -31,7 +31,6 @@
    * 1.各组件按照vue的$emit方法调用onSuccess，onCancel方法 
    * 2.可根据不用的业务需求传入自定义的参数判断执行不用的逻辑
    * */
-  import Rules from './Rules.vue';
   export default {
     components: {
       Rules
@@ -84,7 +83,7 @@
     mounted() {
       this.$nextTick(() => {
           this.componentTag = {
-            0:"Rules"
+            // 0:""
           }[this.hasType]
       })
     },
