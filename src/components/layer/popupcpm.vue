@@ -33,7 +33,7 @@
    * */
   export default {
     components: {
-      Rules
+      // Rules
     },
     props: {
       hasType: {
