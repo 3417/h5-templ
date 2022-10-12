@@ -1,6 +1,6 @@
 <template>
     <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }">
-      <div class="cpm_popup cpm_popup_in" v-fixed>
+      <div class="cpm_popup cpm_popup_in" :class="{'cpm_popup_out':!popupShow}" v-fixed>
         <component :is="componentTag" v-bind="$attrs" :rData="rData" @onSuccess="onSuccess" @onCancel="onCancel" />
       </div>
     </div>
@@ -110,7 +110,7 @@
         setTimeout(() => {
           this.$destroy();
           document.body.removeChild(this.$el);
-        }, 100)
+        }, 380)
       },
     },
   };
@@ -138,7 +138,7 @@
   }
   
   .cpm_popup_out {
-    animation: fade-out 1s ease-out both;
+    animation: fade-out 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   }
   
   // 进入动画效果
@@ -151,6 +151,14 @@
     100% {
       transform: scale(1);
       opacity: 1;
+    }
+  }
+  @keyframes fade-out{
+    0%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0;
     }
   }
   </style>
