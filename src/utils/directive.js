@@ -26,7 +26,7 @@ const eruda = {
         script.type = 'text/javascript';
         script.onload = script.onreadystatechange = function () {
           if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-            eruda && eruda.init();
+            window.eruda && window.eruda.init();
           }
         };
         script.src = '//cdn.jsdelivr.net/npm/eruda';
