@@ -18,10 +18,14 @@ layPopup.install = function (Vue, options) {
             for (let i in options) {
                 if(typeof options[i] === 'function'){
                     $instance[i] = function(v){
-                        options[i](v);
-                        $instance.popupShow = false;
-                        $instance.destroy();
-                        $instance = null;
+                        if(options.isOwnDestory){
+                            options[i](v,$instance); //将组件销毁的时机交给用户
+                        }else{
+                            options[i](v)
+                            $instance.popupShow = false;
+                            $instance.destroy();
+                            $instance = null;
+                        }
                     }
                 }
             }

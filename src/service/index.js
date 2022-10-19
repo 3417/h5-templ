@@ -18,7 +18,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     // 与后台约定code码
-    const code = response.data.code ? response.data.code : response.data.errCode;
+    const code = response.data.code;
     switch(code){
       case 0:
         return response.data;
