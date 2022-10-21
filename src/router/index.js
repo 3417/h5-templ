@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+/**
+ * webpackChunkName:打包项目的chunk名称
+ * 
+ * */ 
 Vue.use(VueRouter)
 
 const routes = [
