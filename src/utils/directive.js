@@ -37,9 +37,32 @@ const eruda = {
   }
 }
 
+const clog = {
+  inserted(el, binding, vnode) {
+    const setConsole = () => {
+      binding.value--;
+      if (window.VConsole) { return };
+      if (binding.value === 0) {
+        let head = document.getElementsByTagName('head')[0];
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onload = script.onreadystatechange = function () {
+          if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+            window.VConsole && new window.VConsole();
+          }
+        };
+        script.src = '//unpkg.com/vconsole@latest/dist/vconsole.min.js';
+        head.appendChild(script);
+      }
+    }
+    el.addEventListener("click", setConsole,false);
+  }
+}
+
 const Plugin = {
   fixed,
-  eruda
+  eruda,
+  clog
 }
 
 export default (app) => {
