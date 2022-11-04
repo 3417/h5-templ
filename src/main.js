@@ -6,8 +6,10 @@ import request from '@/service/index'
 import './plugins/vant';
 import '@as/styles/index.scss';
 import directivePlugins from './utils/directive';
+import filtersPlugins from './utils/filters';
 import layPopup from '@/components/layer/index';
 Vue.use(directivePlugins);
+Vue.use(filtersPlugins);
 Vue.prototype.$request = request;
 Vue.use(layPopup);
 Vue.config.productionTip = false
