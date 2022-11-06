@@ -5,7 +5,6 @@
       </div>
     </div>
   </template>
-  
   <script>
   /**
    * 1.使用方法
@@ -14,7 +13,7 @@
    * 2.接受参数
    * 接受参数：String,Object
    * Object:
-   *    1.hasType:各组件标识
+   *    1.hasType:各组件标识（可自定义）
    *    2.maskBgColor:蒙层背景色（已默认可不传）
    *    3.rData:相关数据信息
    *    4.onSuccess:成功回调
@@ -31,10 +30,9 @@
    * 1.各组件按照vue的$emit方法调用onSuccess，onCancel方法 
    * 2.可根据不用的业务需求传入自定义的参数判断执行不用的逻辑
    * */
+  import config from './config';
   export default {
-    components: {
-      // Rules
-    },
+    components:config,
     props: {
       hasType: {
         type: Number,
@@ -83,7 +81,7 @@
     mounted() {
       this.$nextTick(() => {
           this.componentTag = {
-            // 0:""
+            ...Object.keys(config)
           }[this.hasType]
       })
     },
@@ -110,7 +108,7 @@
         setTimeout(() => {
           this.$destroy();
           document.body.removeChild(this.$el);
-        }, 380)
+        }, 280)
       },
     },
   };
@@ -138,7 +136,7 @@
   }
   
   .cpm_popup_out {
-    animation: fade-out 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: fade-out 0.28s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   }
   
   // 进入动画效果

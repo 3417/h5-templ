@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <h2>{{ msg }}</h2>
     {{ userInfo?.name }}
     <div class="times">
+      {{ msg }}
       {{ times | formatTime }}
     </div>
   </div>

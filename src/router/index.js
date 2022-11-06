@@ -6,13 +6,18 @@ import Home from '../views/Home.vue'
  * 
  * */ 
 Vue.use(VueRouter)
-
+let otherRoutes = [];
+let routeModules = require.context('./modules', true, /\.js$/)
+otherRoutes = routeModules.keys().reduce((pre, e) => {
+    return pre.concat(routeModules(e).default)
+}, []);
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
   },
+  ...otherRoutes
   // {
   //   path: '/about',
   //   name: 'About',

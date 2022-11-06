@@ -33,11 +33,15 @@ layPopup.install = function (Vue, options) {
                 }
             }
         }
-        // return $instance.vshow().then(_rsp=>{
-        //     $instance = null;
-        // }).catch(_err=>{
-        //     $instance = null;
-        // })
+        return $instance.vshow().then(_rsp=>{
+            $instance = null;
+        }).catch(_err=>{
+            $instance = null;
+        })
+    }
+    // 全局销毁弹窗事件
+    Vue.prototype.vshowDestory = ()=>{
+        _destory();
     }
 }
 
