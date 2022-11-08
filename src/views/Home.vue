@@ -9,7 +9,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,getCurrentInstance, onMounted } from 'vue';
+const {proxy} = getCurrentInstance();
 const msg = ref("Hello Vue2.7");
 const userInfo = ref(null);
 const times = ref("");
@@ -20,6 +21,9 @@ const getDateTimes = () => {
   }, 1000);
 }
 getDateTimes();
+onMounted(()=>{
+  console.log('相当于以前的this=>',proxy)
+})
 </script>
 
 <style>
