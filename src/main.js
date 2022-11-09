@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import {PiniaVuePlugin,createPinia} from 'pinia';
 import request from '@/service/index'
 import './plugins/vant';
 import '@as/styles/index.scss';
@@ -12,9 +12,11 @@ Vue.use(directivePlugins);
 Vue.use(filtersPlugins);
 Vue.prototype.$request = request;
 Vue.use(layPopup);
+Vue.use(PiniaVuePlugin);
+const pinia = createPinia();
 Vue.config.productionTip = false
 new Vue({
   router,
-  store,
+  pinia,
   render: h => h(App)
 }).$mount('#app')
