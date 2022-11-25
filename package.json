@@ -1,7 +1,7 @@
 {
   "name": "{{name}}",
   "version": "{{version}}",
-  "description":"{{description}}",
+  "description": "{{description}}",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,8 +14,13 @@
     "dayjs": "^1.11.6",
     "filemanager-webpack-plugin": "^7.0.0",
     "pinia": "^2.0.23",
+    "unplugin-auto-import": "^0.11.4",
     "vue": "2.7.12",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "ali-oss": "^6.17.1",
+    "glob": "^8.0.3",
+    "progress": "^2.0.3",
+    "inquirer": "^8.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
