@@ -58,7 +58,7 @@ const clog = {
     el.addEventListener("click", setConsole,false);
   }
 }
-// 使用 ：v-debounce="{fn:<handFn>,event:'click',delay:200}"
+// 使用 :v-debounce="{fn:<handFn>,event:'click',delay:200}"
 const debounce = {
   inserted(el,binding){
       if(typeof binding.value.fn !== 'function' || !binding.value.event) return
@@ -85,7 +85,7 @@ const debounce = {
       el.removeEventListener(binding.value.event,el.handler);
   }
 }
-// 使用 ：v-throttle="{fn:<handFn>,event:'input',delay:200}"
+// 使用 :v-throttle="{fn:<handFn>,event:'input',delay:200}"
 const throttle = {
   inserted(el,binding){
       if(typeof binding.value.fn !== 'function' || !binding.value.event) return;

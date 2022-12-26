@@ -2,18 +2,16 @@
   <div class="home">
     {{ userInfo?.name }}
     <div class="times">
-      {{ msg }}
-      {{ times | formatTime }}
+      <p>{{ msg }}</p>
+      <p>
+        {{ times | formatTime }}
+      </p>
     </div>
-    <p>
-      {{count}}
-    </p>
-    <button @click="addCount">Click Me</button>
   </div>
 </template>
 
 <script setup>
-import { ref,getCurrentInstance, onMounted, computed } from 'vue';
+import { ref,getCurrentInstance, onMounted } from 'vue';
 import {useMainStore} from '@/store/index';
 const {proxy} = getCurrentInstance();
 const msg = ref("Hello Vue2.7");
@@ -26,25 +24,21 @@ const getDateTimes = () => {
     getDateTimes();
   }, 1000);
 }
-const count = computed(()=>{
-  return store.count
-});
 getDateTimes();
 onMounted(()=>{
   console.log('相当于以前的this=>',proxy)
 })
-
-const addCount = ()=>{
-  store.increment();
-}
 </script>
 
-<style>
+<style lang="scss" scoped>
 .times {
   background: linear-gradient(to right, #c20fc2, #e0f009);
   -webkit-background-clip: text;
   color: transparent;
   text-align: center;
-  font-size: 12vw;
+  font-size: 10vw;
+  & p:nth-child(2){
+    font-size:12vw;
+  }
 }
 </style>
