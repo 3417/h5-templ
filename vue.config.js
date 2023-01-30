@@ -33,6 +33,7 @@ module.exports = defineConfig({
         })
       ]
     }
+    // config.plugins = [require('unplugin-auto-import/webpack')];
     if (process.env.NODE_ENV === 'production') {
       config.output.filename = `js/[name].${timestamp}.js`
       config.output.chunkFilename = `js/[name].${timestamp}.js`
