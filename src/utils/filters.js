@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 const Plugin =  {
-    formatTime:(v)=>{
-        // return v ? dayjs(v).format("YYYY-MM-DD HH:mm:ss"):'--'
+    formatChTime:(v)=>{
         return v ? dayjs(v).format("YYYY年MM月DD日 HH时mm分ss秒"):'--'
+    },
+    formatDate:()=>{
+      return v ? dayjs(v).format("YYYY/MM/DD HH:mm:"):'--'
     }
 }
 

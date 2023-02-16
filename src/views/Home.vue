@@ -4,7 +4,7 @@
     <div class="times">
       <p>{{ msg }}</p>
       <p>
-        {{ times | formatTime }}
+        {{ times | formatChTime }}
       </p>
     </div>
   </div>

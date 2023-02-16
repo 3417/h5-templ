@@ -1,7 +1,7 @@
 <template>
     <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }">
       <div class="cpm_popup cpm_popup_in" :class="{'cpm_popup_out':!popupShow}" v-fixed>
-        <component :is="componentTag" v-bind="$attrs" :rData="rData" @onSuccess="onSuccess" @onCancel="onCancel" />
+        <component :is="componenTag" v-bind="$attrs" :rData="rData" @onSuccess="onSuccess" @onCancel="onCancel" />
       </div>
     </div>
   </template>
@@ -9,34 +9,33 @@
   /**
    * 1.使用方法
    * this.vshow(String/Object)  //预留了String类型，目前未使用
-   * 传入的需要页面展示的数据放在rData对象中，hasType为不同类型弹窗标识
+   * 传入的需要页面展示的数据放在rData对象中，componenTag为传入的组件
    * 2.接受参数
    * 接受参数：String,Object
    * Object:
-   *    1.hasType:各组件标识（可自定义）
+   *    1.componenTag:传入自定义的组件
    *    2.maskBgColor:蒙层背景色（已默认可不传）
    *    3.rData:相关数据信息
    *    4.onSuccess:成功回调
    *    5.onSuccess:关闭回调 
    * 调用事例:
    * this.vshow({
-   *    hastype:<type>,
+   *    componenTag:<components>,
    *    rData:<object>,
    *    onSuccess:<fn(参数)>,
    *    onCancel:<fn(参数)>
    * })
    * 
    * tip:
-   * 1.各组件按照vue的$emit方法调用onSuccess，onCancel方法 
+   * 1.自定义组件按照vue的$emit方法调用,基础组件支持onSuccess，onCancel方法,
+   * 即自定义组件需要使用方法时可以$emit('onSuccess')或者$emit('onCancel'); 
    * 2.可根据不用的业务需求传入自定义的参数判断执行不用的逻辑
    * */
-  import config from './config';
   export default {
-    components:config,
     props: {
-      hasType: {
-        type: Number,
-        default: 0
+      componenTag: {
+        type: Object,
+        default: ''
       },
       maskBgColor: {
         type: String,
@@ -75,27 +74,9 @@
         resolve: "",
         reject: "",
         promise: null,
-        componentTag: ""  //动态组件
       };
     },
-    mounted() {
-      this.$nextTick(() => {
-          this.componentTag = {
-            ...Object.keys(config)
-          }[this.hasType]
-      })
-    },
     methods: {
-      onCancel() {
-        this.popupShow = false;
-        this.reject()
-        this.destroy();
-      },
-      onSuccess() {
-        this.popupShow = false;
-        this.resolve()
-        this.destroy();
-      },
       vshow() {
         this.popupShow = true;
         this.promise = new Promise((resolve, reject) => {
@@ -104,12 +85,26 @@
         })
         return this.promise;
       },
-      destroy() {
+      onSuccess(){
+        this.popupShow = false;
+        this.reject();
+        this.destory();
+      },
+      onCancel(){
+        this.popupShow = false;
+        this.resolve();
+        this.destory();
+      },
+      onClose(){
+        this.popupShow = false;
+        this.destory();
+      },
+      destory(){
         setTimeout(() => {
           this.$destroy();
           document.body.removeChild(this.$el);
         }, 280)
-      },
+      }
     },
   };
   </script>

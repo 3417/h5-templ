@@ -1,42 +1,46 @@
 import popupCpm from './popupcpm.vue';
 let layPopup = {};
 layPopup.install = function (Vue, options) {
-    let cpm = Vue.extend(popupCpm);
-    let $instance;
-    const Mask = () => {
-        $instance = new cpm();
-        let ele = $instance.$mount().$el;
-        document.body.appendChild(ele);
+    let Action = Vue.extend(popupCpm);
+    const div = document.createElement("div");
+    document.body.appendChild(div);
+    let $ele;
+    const Mask = (config) => {
+        $ele = new Action({
+            propsData:{
+                ...config,
+            },
+    
+        }).$mount(div)
     }
-    const _destory = () =>{
-        $instance.popupShow = false;
-        $instance.destroy();
-        $instance = null;
+
+    const _destory = ()=>{
+        $ele.popupShow = false;
+        $ele.onClose();
+        $ele = null
     }
-    Vue.prototype.vshow = (options) => {
-        if (!$instance) Mask();
-        if (typeof options === 'string') {
-            // 传入为字符串的逻辑-可自定义优化
-            console.log("弹窗字符串的逻辑");
-        } else if (typeof options === 'object') {
-            Object.assign($instance, options);
-            for (let i in options) {
-                if(typeof options[i] === 'function'){
-                    $instance[i] = function(v){
-                        if(options.isOwnDestory){
-                            options[i](v,_destory); //将组件销毁的时机交给用户
-                        }else{
-                            options[i](v);
-                            _destory()
+    Vue.prototype.vshow = (opts) => {
+        if ($ele) return;
+        switch(typeof opts){
+            case 'string':
+                console.log('Oops... is String');
+                break;
+            case 'object':
+                Mask(opts);
+                for(let key in opts){
+                    if(typeof opts[key] === 'function'){
+                        $ele[key] = (v)=>{
+                            if(opts.isOwnDestory){opts[key](v,_destory)}
+                            else {opts[key](v);_destory()};
                         }
                     }
                 }
-            }
+                break;
         }
-        return $instance.vshow().then(_rsp=>{
-            $instance = null;
+        return $ele.vshow().then(_rsp=>{
+            $ele = null;
         }).catch(_err=>{
-            $instance = null;
+            $ele = null;
         })
     }
     // 全局销毁弹窗事件

@@ -7,7 +7,7 @@ import './plugins/vant';
 import '@as/styles/index.scss';
 import directivePlugins from './utils/directive';
 import filtersPlugins from './utils/filters';
-import './utils/wechatFont';
+import './utils/util';
 import layPopup from '@/components/layer/index';
 Vue.use(directivePlugins);
 Vue.use(filtersPlugins);
