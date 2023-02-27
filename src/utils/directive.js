@@ -29,7 +29,7 @@ const eruda = {
             window.eruda && window.eruda.init();
           }
         };
-        script.src = '//cdn.jsdelivr.net/npm/eruda';
+        script.src = '//cdn.bootcss.com/eruda/1.2.4/eruda.min.js';
         head.appendChild(script);
       }
     }
