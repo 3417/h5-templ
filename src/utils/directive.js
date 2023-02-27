@@ -130,13 +130,8 @@ const clickOutSide = {
 }
 // 使用v-h5drag 携带：animation则有动画
 const h5drag = {
-  bind: function (el, binding) {
-    let isDrag = true;
-    let tempX = 0;
-    let x = 0;
-    let tempY = 0;
-    let y = 0;
-    let endX = 0;
+  bind: function (el, binding, vnode) {
+    let isDrag = true, tempX = 0, x = 0, tempY = 0, y = 0, endX = 0;
     el.style.position = "absolute";
     el.ontouchstart = e => {
       isDrag = true;
@@ -153,9 +148,6 @@ const h5drag = {
         let curX, curY;
         curX = e.touches[0].pageX - (el.offsetWidth / 2);
         curY = e.touches[0].pageY - (el.offsetHeight / 2);
-        // curX = tempX + e.touches[0].pageX - x;
-        // curY = tempY + e.touches[0].pageY - y;
-        // let height = document.documentElement.clientHeight;
         let height = document.documentElement.clientHeight >= document.body.scrollHeight ? document.documentElement.clientHeight : document.body.scrollHeight
         if (binding.value) {
           height = el.parentElement.clientHeight;
@@ -177,7 +169,11 @@ const h5drag = {
     };
     el.ontouchend = e => {
       if (binding.arg === 'animation') {
-        el.style.left = (Math.floor(document.documentElement.clientWidth / 2) > endX + (el.clientWidth / 2)) ? 0 : (document.documentElement.clientWidth - el.clientWidth) + 'px'
+        const { width } = window.screen;
+        const { left } = window.getComputedStyle(el);
+        let px = left.match(/\d+/)[0];
+        let lft = (px < width/2) ? 0 : left;
+        el.style.left = (Math.floor(document.documentElement.clientWidth / 2) > endX + (el.clientWidth / 2)) ? lft : (document.documentElement.clientWidth - el.clientWidth) + 'px'
         el.style.transition = "all .18s linear";
       }
       isDrag = false;
