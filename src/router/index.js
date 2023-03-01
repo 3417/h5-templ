@@ -17,7 +17,7 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  ...otherRoutes
+  ...otherRoutes,
   // {
   //   path: '/about',
   //   name: 'About',

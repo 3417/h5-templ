@@ -1,7 +1,7 @@
 import popupCpm from './popupcpm.vue';
 let layPopup = {};
 layPopup.install = function (Vue, options) {
-    let $ele;
+    let $ele,$eles=[];
     const Mask = (config) => {
         let Action = Vue.extend(popupCpm);
         const div = document.createElement("div");
@@ -10,16 +10,29 @@ layPopup.install = function (Vue, options) {
             propsData: {
                 ...config,
             },
-        }).$mount(div)
+        }).$mount(div);
+        $eles.push($ele);
     }
-
+    // 多个弹窗依次销毁
     const _destory = () => {
         $ele.popupShow = false;
         $ele.onClose();
-        $ele = null
+        $ele = null;
+        if($eles.length > 1){
+            $ele = $eles[$eles.length - 2];
+            $eles = $eles.splice($eles.length-1,1);
+        }
+    }
+    // 销毁全部的弹窗
+    const destoryAll = () =>{
+        $eles.forEach(v=>{
+            v.popupShow = false;
+            v.onClose();
+        })
+        $eles = [];
+        $ele = null;
     }
     Vue.prototype.vshow = (opts) => {
-        if ($ele) return;
         switch (typeof opts) {
             case 'string':
                 console.log('Oops... is String');
@@ -44,7 +57,7 @@ layPopup.install = function (Vue, options) {
     }
     // 全局销毁弹窗事件
     Vue.prototype.vshowDestory = () => {
-        _destory();
+        destoryAll();  //销毁所有的弹窗
     }
 }
 
