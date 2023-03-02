@@ -1,16 +1,30 @@
-/**
- * 防止用户使用微信把字体放大导致页面变形
- * */ 
-(function () {
-    if (typeof WeixinJSBridge == 'object' && typeof WeixinJSBridge.invoke == 'function') {
-        onResetFontSize()
-    } else { document.addEventListener('WeixinJSBridgeReady', onResetFontSize, false) }
-    function onResetFontSize() {
-        // 设置网页字体为默认大小
-        WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 })
-        // 重写设置网页字体大小的事件
-        WeixinJSBridge.on('menu:setfont', function () {
-            WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 })
-        })
+// 递归查询树状结构的数据并且保留层级
+export const recursion = (nodes, predicate, fn = () => false) => {
+    if (!(nodes && nodes.length)) {
+        return []
     }
-})()
+    const newChildren = [];
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        if (fn(node) && predicate(node)) {
+            newChildren.push(node);
+            continue;
+        }
+        const subs = recursion(node.children, predicate, fn);
+        if ((subs && subs.length) || predicate(node)) {
+            node.children = subs || [];
+            newChildren.push(node);
+        }
+    }
+    return newChildren.length ? newChildren : []
+}
+
+// const newTree = recursion(JSON.parse(JSON.stringify(data)),
+//     (node) => {
+//         if (node.id && node.id == '5') {
+//             return true
+//         }
+//         return false;
+//     }
+
+// )

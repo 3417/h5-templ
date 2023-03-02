@@ -8,6 +8,7 @@ import '@as/styles/index.scss';
 import directivePlugins from './utils/directive';
 import filtersPlugins from './utils/filters';
 import './utils/util';
+import './utils/wx';
 import layPopup from '@/components/layer/index';
 Vue.use(directivePlugins);
 Vue.use(filtersPlugins);
