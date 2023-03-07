@@ -21,6 +21,32 @@ const pxToViewportConfig = {
   replace: true, // 是否转换后直接更换属性值
   landscape: false // 是否处理横屏情况
 }
+// 动态配置多页面
+// const glob = require("glob");
+// const getPages = ()=>{
+//   let entries = glob.globSync("./src/pages/*/*.js");
+//   console.log(entries)
+//   let pages = {
+//     index:{
+//       entry:"src/main.js",
+//       template:"public/index.html",
+//       fileName:"index.html",
+//       chunks:['chunk-vendors', 'chunk-common', 'index']
+//     }
+//   };
+//   entries.forEach(filePath=>{
+//     let fileName = filePath.substring(filePath.lastIndexOf("\\")+1,filePath.lastIndexOf("."));
+//     console.log(fileName);
+//     pages[fileName] = {
+//       entry:`src/pages/${fileName}/${fileName}.js`,
+//       template:`public/${fileName}.html`,
+//       fileName:`${fileName}.html`, //dist输出
+//       chunks:["chunk-vendors","chunk-common",fileName]
+//     }
+//     console.log("pages",pages);
+//   })
+//   return pages;
+// }
 module.exports = defineConfig({
   transpileDependencies: true,
   outputDir: `${fileName}`,
@@ -28,6 +54,7 @@ module.exports = defineConfig({
   publicPath: "./",
   assetsDir: "static",
   productionSourceMap: false,
+  // pages:getPages(), //动态配置多页面
   css: {
     sourceMap: true,
     loaderOptions: {
@@ -88,6 +115,7 @@ module.exports = defineConfig({
       .set('@static', resolve('src/static'))
       .set('@views', resolve('src/views'))
     config.module.rules.delete('eslint');
+    // todo:如果是多页面则需要将这块注释掉
     config.plugin('html').tap(args => {
       args[0].title = '首页'
       return args
