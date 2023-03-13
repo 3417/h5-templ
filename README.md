@@ -38,7 +38,7 @@ yarn config set ignore-engines true
 
 ```
 动态计算
-let scale = window.screen.width / 750  //计算缩放比
+let scale = window.screen.width / 375  //计算缩放比
 ((设置的像素单位 * scale) * 2).toFixed(2) + 'px';
 ```
 

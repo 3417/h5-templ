@@ -128,7 +128,7 @@ const clickOutSide = {
     delete el.__vueClickOutSide;
   },
 }
-// 使用v-h5drag 携带：animation则有动画
+// 使用v-h5drag 携带：animation则有动画=>v-h5drag:animation
 const h5drag = {
   bind: function (el, binding, vnode) {
     let isDrag = true, tempX = 0, x = 0, tempY = 0, y = 0, endX = 0;
@@ -172,7 +172,7 @@ const h5drag = {
         const { width } = window.screen;
         const { left } = window.getComputedStyle(el);
         let px = left.match(/\d+/)[0];
-        let lft = (px < width/2) ? 0 : left;
+        let lft = (px < width / 2) ? 0 : left;
         el.style.left = (Math.floor(document.documentElement.clientWidth / 2) > endX + (el.clientWidth / 2)) ? lft : (document.documentElement.clientWidth - el.clientWidth) + 'px'
         el.style.transition = "all .18s linear";
       }
@@ -181,6 +181,73 @@ const h5drag = {
   }
 }
 
+// 生成防删除的水印,使用v-waterMark="{container:'xxx',....}"
+const waterMark = {
+  bind(el, binding, vnode) {
+    let scale = window.screen.width / 375;  //根据设计图变换
+    const _define = {
+      container: el,
+      width: `${(100 * scale).toFixed(2)}px`,
+      height: `${(100 * scale).toFixed(2)}px`,
+      textAlign: 'center',
+      verticalAlign: 'center',
+      font: '18px Microsoft Yahei',
+      fillStyle: 'rgba(100,100,100,.2)', //水印颜色
+      content: '机密',
+      rotate: -20
+    };
+    const props =  Object.assign(_define, binding.value)
+    const { container, width, height, textAlign, verticalAlign, font, fillStyle, content, rotate } = props;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.setAttribute('width', width);
+    canvas.setAttribute('height', height);
+    ctx.textAlign = textAlign;
+    ctx.verticalAlign = verticalAlign;
+    ctx.font = font;
+    ctx.fillStyle = fillStyle;
+    ctx.rotate(Math.PI / 100 * rotate);
+    ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
+    const base64Url = canvas.toDataURL('image/png', .92);
+    const _wm = document.querySelector('._wm');
+    const watermarkDiv = _wm || document.createElement('div');
+    const styleStr = `
+      width:100%;
+      height:100%;
+      position:absolute;
+      top:0;
+      left:0;
+      background:url(${base64Url});
+      pointer-events:none;
+    `
+    watermarkDiv.setAttribute('style', styleStr);
+    watermarkDiv.classList.add('_wm');
+    if (!_wm) {
+      container.style.position = 'relative';
+      container.insertBefore(watermarkDiv, container.firstChild);
+    }
+    const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    if (MutationObserver) {
+      let observer = new MutationObserver(() => {
+        const _wm = document.querySelector('._wm');
+        if ((_wm && _wm.getAttribute('style') !== styleStr) || !_wm) {
+          observer.disconnect();
+          observer = null;
+          watermark(props);
+        }
+      })
+      observer.observe(container, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true
+      })
+    }
+  }
+}
+
+
 const Plugin = {
   fixed,
   eruda,
@@ -188,7 +255,8 @@ const Plugin = {
   debounce,
   throttle,
   clickOutSide,
-  h5drag
+  h5drag,
+  waterMark
 }
 
 export default (app) => {

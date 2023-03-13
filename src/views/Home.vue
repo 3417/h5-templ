@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-waterMark>
     {{ userInfo?.name }}
     <div class="times">
       <p>{{ msg }}</p>
