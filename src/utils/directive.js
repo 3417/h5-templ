@@ -58,7 +58,7 @@ const clog = {
     el.addEventListener("click", setConsole, false);
   }
 }
-// 使用 :v-debounce="{fn:<handFn>,event:'click',delay:200}"
+// 使用 :v-debounce="{fn:()=>{<handFn>},event:'click',delay:200}"
 const debounce = {
   inserted(el, binding) {
     if (typeof binding.value.fn !== 'function' || !binding.value.event) return
@@ -85,7 +85,7 @@ const debounce = {
     el.removeEventListener(binding.value.event, el.handler);
   }
 }
-// 使用 :v-throttle="{fn:<handFn>,event:'input',delay:200}"
+// 使用 :v-throttle="{fn:()=>{<handFn>},event:'input',delay:200}"
 const throttle = {
   inserted(el, binding) {
     if (typeof binding.value.fn !== 'function' || !binding.value.event) return;
@@ -186,15 +186,15 @@ const waterMark = {
   bind(el, binding, vnode) {
     let scale = window.screen.width / 375;  //根据设计图变换
     const _define = {
-      container: el,
-      width: `${(100 * scale).toFixed(2)}px`,
+      container: el,  //不传使用指令绑定的DOM
+      width: `${(100 * scale).toFixed(2)}px`, //默认100px
       height: `${(100 * scale).toFixed(2)}px`,
       textAlign: 'center',
       verticalAlign: 'center',
-      font: '18px Microsoft Yahei',
+      font: '18px Microsoft Yahei', //字体样式
       fillStyle: 'rgba(100,100,100,.2)', //水印颜色
-      content: '机密',
-      rotate: -20
+      content: '机密', //水印文字
+      rotate: -20 //旋转角度
     };
     const props =  Object.assign(_define, binding.value)
     const { container, width, height, textAlign, verticalAlign, font, fillStyle, content, rotate } = props;

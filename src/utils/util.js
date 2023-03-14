@@ -18,7 +18,6 @@ export const recursion = (nodes, predicate, fn = () => false) => {
     }
     return newChildren.length ? newChildren : []
 }
-
 // const newTree = recursion(JSON.parse(JSON.stringify(data)),
 //     (node) => {
 //         if (node.id && node.id == '5') {
