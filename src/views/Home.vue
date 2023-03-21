@@ -31,6 +31,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.home{
+  height: 100vh;
+}
 .times {
   background: linear-gradient(to right, #c20fc2, #e0f009);
   -webkit-background-clip: text;
