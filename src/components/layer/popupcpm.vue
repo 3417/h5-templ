@@ -16,8 +16,11 @@
    *    1.componenTag:传入自定义的组件
    *    2.maskBgColor:蒙层背景色（已默认可不传）
    *    3.rData:相关数据信息
-   *    4.onSuccess:成功回调
-   *    5.onSuccess:关闭回调 
+   *    4.isOwnDestory:是否需要手动销毁弹窗
+   *      4.1<默认为false,如为true则onSuccess，onCancel回调函数中会回传一个callback函数，需要手动调用销毁>
+   *       4.2<eg:onSuccess:(val,cb)=>{cb && cb()}>
+   *    5.onSuccess:成功回调
+   *    6.onSuccess:关闭回调 
    * 调用事例:
    * this.vshow({
    *    componenTag:<components>,
@@ -30,6 +33,7 @@
    * 1.自定义组件按照vue的$emit方法调用,基础组件支持onSuccess，onCancel方法,
    * 即自定义组件需要使用方法时可以$emit('onSuccess')或者$emit('onCancel'); 
    * 2.可根据不用的业务需求传入自定义的参数判断执行不用的逻辑
+   * 如果需要在弹窗中再次调用弹窗请使用setTimeout方式异步调用
    * */
   export default {
     props: {
