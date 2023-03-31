@@ -27,3 +27,31 @@ export const recursion = (nodes, predicate, fn = () => false) => {
 //     }
 
 // )
+
+
+// 图片文件转base64实现预览
+export const picToPreview=(e)=>{
+    if(e.target.files.length){
+        const fr = new FileReader();
+        fr.readAsDataURL(e.target.files[0]);
+        fr.onload = ()=>{
+            return fr.result;
+        }
+    }
+    return false;
+}
+
+// 递归深拷贝->copyDeep(<{obj}>,<newobj>)
+export const copyDeep = (obj,newobj)=>{
+    for(let key in obj){
+        if(obj[key] instanceof Array){
+            obj[key] = []
+            copyDeep(obj[key],newobj[key])
+        }else if(obj[key] instanceof Object){
+            obj[key] = {};
+            copyDeep(obj[key],newobj[key])
+        }else{
+            newobj[key] = obj[key]
+        }
+    }
+}
