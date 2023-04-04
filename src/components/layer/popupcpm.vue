@@ -24,6 +24,7 @@
    * 调用事例:
    * this.vshow({
    *    componenTag:<components>,
+   *    isOwnDestory：true //判断是否要手动销毁,默认为false
    *    rData:<object>,
    *    onSuccess:<fn(参数)>,
    *    onCancel:<fn(参数)>
@@ -89,15 +90,11 @@
         })
         return this.promise;
       },
-      onSuccess(){
-        this.popupShow = false;
-        this.reject();
-        this.destory();
+      onSuccess(v){
+        this.resolve(v);
       },
-      onCancel(){
-        this.popupShow = false;
-        this.resolve();
-        this.destory();
+      onCancel(v){
+        this.reject(v);
       },
       onClose(){
         this.popupShow = false;

@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+df-loading
+df-goods
 
 
 # local env files
