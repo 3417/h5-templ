@@ -1,5 +1,4 @@
 import popupCpm from './popupcpm.vue';
-let layPopup = {};
 export default {
     install(Vue, options) {
         let $ele, $eles = [];
@@ -34,6 +33,7 @@ export default {
             $ele = null;
         }
         Vue.prototype.vshow = (opts) => {
+            if(!opts){return};
             switch (typeof opts) {
                 case 'string':
                     console.log('Oops... is String');
@@ -56,10 +56,12 @@ export default {
                     opts.onSuccess(_rsp, $ele.onClose);
                     return;
                 }
+                opts.onSuccess?opts.onSuccess(_resp):'';
                 $ele.onClose();
                 $ele = null;
             }).catch(_err => {
                 console.log("点击取消的值=>",_err);
+                opts.onCancel?opts.onCancel(_err):'';
                 $ele.onClose();
                 $ele = null;
             })
