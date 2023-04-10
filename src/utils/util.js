@@ -55,3 +55,13 @@ export const copyDeep = (obj,newobj)=>{
         }
     }
 }
+
+// 获取手机电池信息
+export const getBattery = ()=>{
+    const batteryStatus = navigator.getBattery().then((battery)=>{
+        console.log(battery);
+        battery.addEventListener('levelchange',()=>{});
+        battery.addEventListener('chargingchange',()=>{});
+    })
+    
+}
