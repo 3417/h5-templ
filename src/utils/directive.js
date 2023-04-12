@@ -108,15 +108,20 @@ const throttle = {
     el.removeEventListener(binding.value.event, el.handler);
   }
 }
-// v-clickOutSide
+// v-clickOutSide 默认 判断组件中的isShow变量值，可以自定义传参
 const clickOutSide = {
   bind(el, binding, vnode) {
     function clickHandler(e) {
       if (el.contains(e.target)) {
         return false;
       } else {
-        if (vnode.context.isShow) {
-          vnode.context.isShow = false;  //data定义的参数
+        switch(binding.value){
+          // case 'iShow':
+          //   vnode.context.isShow ? vnode.context.isShow = false :''
+          //   break;
+          default:
+            vnode.context.isShow ? vnode.context.isShow = false :''
+            break;  
         }
       }
     }
@@ -247,6 +252,33 @@ const waterMark = {
   }
 }
 
+// 倒计时 v-countdown[30]="{fn:<fn>,msg}",组件中的fn方法需要使用promise返回值
+const countdown = {
+  inserted(el, binding, vnode) {
+    console.log(el,binding,vnode);
+    let flag = false, that = vnode.context;  //that为当前组件的this
+    el.onclick = async function () {
+      let getMsg = await binding.value.fn();
+      console.log(getMsg,flag)
+      if(!getMsg || flag){return};
+      flag = true;
+      let i = binding.arg || 60;  //获取倒计时 时间
+      el.innerHTML = i + 's';
+      vnode.elm.style = 'filter:grayscale(1);pointer-events:none';
+      let t = setInterval(() => {
+        if (i < 1) {
+          clearInterval(t);
+          flag = false;
+          el.innerHTML = binding.value.msg;
+          vnode.elm.style = 'filter:grayscale(0);pointer-events:auto';
+          return;
+        };
+        i--;
+        el.innerHTML = i + 's';
+      }, 1000)
+    }
+  }
+}
 
 const Plugin = {
   fixed,
@@ -256,7 +288,8 @@ const Plugin = {
   throttle,
   clickOutSide,
   h5drag,
-  waterMark
+  waterMark,
+  countdown
 }
 
 export default (app) => {
