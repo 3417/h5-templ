@@ -108,20 +108,17 @@ const throttle = {
     el.removeEventListener(binding.value.event, el.handler);
   }
 }
-// v-clickOutSide 默认 判断组件中的isShow变量值，可以自定义传参
+// v-clickOutSide=“<string>” 默认 判断组件中的isShow变量值，可以自定义传参为（字符串）,并且设置显示的变量
 const clickOutSide = {
   bind(el, binding, vnode) {
     function clickHandler(e) {
       if (el.contains(e.target)) {
         return false;
       } else {
-        switch(binding.value){
-          // case 'iShow':
-          //   vnode.context.isShow ? vnode.context.isShow = false :''
-          //   break;
-          default:
-            vnode.context.isShow ? vnode.context.isShow = false :''
-            break;  
+        if(binding.value){
+          vnode.context[binding.value] ? vnode.context[binding.value] = false : ''
+        }else{
+          vnode.context.isShow ? vnode.context.isShow = false :''
         }
       }
     }
@@ -188,7 +185,7 @@ const h5drag = {
 
 // 生成防删除的水印,使用v-waterMark="{container:'xxx',....}"
 const waterMark = {
-  bind(el, binding, vnode) {
+  inserted(el, binding, vnode) {
     let scale = window.screen.width / 375;  //根据设计图变换
     const _define = {
       container: el,  //不传使用指令绑定的DOM
