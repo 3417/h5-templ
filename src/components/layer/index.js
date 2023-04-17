@@ -56,7 +56,7 @@ export default {
                     opts.onSuccess(_rsp, $ele.onClose);
                     return;
                 }
-                opts.onSuccess?opts.onSuccess(_resp):'';
+                opts.onSuccess?opts.onSuccess(_rsp):'';
                 $ele.onClose();
                 $ele = null;
             }).catch(_err => {
