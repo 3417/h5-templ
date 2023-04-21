@@ -1,158 +1,139 @@
 <template>
-    <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }">
-      <div class="cpm_popup cpm_popup_in" :class="{'cpm_popup_out':!popupShow}" v-fixed>
-        <component :is="componenTag" v-bind="$attrs" :rData="rData" @onSuccess="onSuccess" @onCancel="onCancel" />
-      </div>
+  <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }">
+    <div
+      class="cpm_popup cpm_popup_in"
+      :class="{ cpm_popup_out: !popupShow }"
+      v-fixed
+    >
+      <component
+        :is="componenTag"
+        v-bind="$attrs"
+        :rData="rData"
+        @onSuccess="onSuccess"
+        @onCancel="onCancel"
+      />
     </div>
-  </template>
+  </div>
+</template>
   <script>
-  /**
-   * 1.使用方法
-   * this.vshow(String/Object)  //预留了String类型，目前未使用
-   * 传入的需要页面展示的数据放在rData对象中，componenTag为传入的组件
-   * 2.接受参数
-   * 接受参数：String,Object
-   * Object:
-   *    1.componenTag:传入自定义的组件
-   *    2.maskBgColor:蒙层背景色（已默认可不传）
-   *    3.rData:相关数据信息
-   *    4.isOwnDestory:是否需要手动销毁弹窗
-   *      4.1<默认为false,如为true则onSuccess，onCancel回调函数中会回传一个callback函数，需要手动调用销毁>
-   *       4.2<eg:onSuccess:(val,cb)=>{cb && cb()}>
-   *    5.onSuccess:成功回调
-   *    6.onSuccess:关闭回调 
-   * 调用事例:
-   * this.vshow({
-   *    componenTag:<components>,
-   *    isOwnDestory：true //判断是否要手动销毁,默认为false
-   *    rData:<object>,
-   *    onSuccess:<fn(参数)>,
-   *    onCancel:<fn(参数)>
-   * })
-   * 
-   * tip:
-   * 1.自定义组件按照vue的$emit方法调用,基础组件支持onSuccess，onCancel方法,
-   * 即自定义组件需要使用方法时可以$emit('onSuccess')或者$emit('onCancel'); 
-   * 2.可根据不用的业务需求传入自定义的参数判断执行不用的逻辑
-   * 如果需要在弹窗中再次调用弹窗请使用setTimeout方式异步调用
-   * */
-  export default {
-    props: {
-      componenTag: {
-        type: Object,
-        default: ''
-      },
-      maskBgColor: {
-        type: String,
-        default: "rgba(0,0,0,.85)"
-      },
-      rData: {
-        type: Object,
-        default: () => { //定义默认的对象数据
-          return {
-          }
-        },
-      }
+export default {
+  props: {
+    componenTag: {
+      type: Object,
+      default: "",
     },
-    directives: {
-      fixed: {
-        inserted() {
-          let scrollTop =
-            document.body.scrollTop || document.documentElement.scrollTop;
-          document.body.style.cssText +=
-            "position:fixed;overflow:hidden;width:100%;top:-" + scrollTop + "px;";
-        },
-        unbind() {
-          let body = document.body;
-          body.style.position = "";
-          let top = body.style.top;
-          document.body.scrollTop = document.documentElement.scrollTop =
-            -parseInt(top);
-          body.style.top = "";
-          body.style.overflow = "initial";
-        },
+    maskBgColor: {
+      type: String,
+      default: "rgba(0,0,0,.85)",
+    },
+    isOwnDestory: {
+      type: Boolean,
+      default: false,
+    },
+    rData: {
+      type: Object,
+      default: () => {
+        //定义默认的对象数据
+        return {};
       },
     },
-    data() {
-      return {
-        popupShow: false,
-        resolve: "",
-        reject: "",
-        promise: null,
-      };
+    onSuccess:{
+      type:Function,
+      default:()=>{}
     },
-    methods: {
-      vshow() {
-        this.popupShow = true;
-        this.promise = new Promise((resolve, reject) => {
-          this.resolve = resolve;
-          this.reject = reject;
-        })
-        return this.promise;
+    onCancel:{
+      type:Function,
+      default:()=>{}
+    }
+  },
+  directives: {
+    fixed: {
+      inserted() {
+        let scrollTop =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        document.body.style.cssText +=
+          "position:fixed;overflow:hidden;width:100%;top:-" + scrollTop + "px;";
       },
-      onSuccess(v){
-        this.resolve(v);
+      unbind() {
+        let body = document.body;
+        body.style.position = "";
+        let top = body.style.top;
+        document.body.scrollTop = document.documentElement.scrollTop =
+          -parseInt(top);
+        body.style.top = "";
+        body.style.overflow = "initial";
       },
-      onCancel(v){
-        this.reject(v);
-      },
-      onClose(){
-        this.popupShow = false;
-        this.destory();
-      },
-      destory(){
-        setTimeout(() => {
-          this.$destroy();
-          document.body.removeChild(this.$el);
-        }, 280)
-      }
     },
-  };
-  </script>
+  },
+  data() {
+    return {
+      popupShow: false,
+      promise: null,
+    };
+  },
+  methods: {
+    vshow() {
+      this.popupShow = true;
+      this.promise = new Promise((resolve, reject) => {});
+      return this.promise;
+    },
+    onClose() {
+      this.popupShow = false;
+      this.destory();
+    },
+    destory() {
+      setTimeout(() => {
+        this.$destroy();
+        document.body.removeChild(this.$el);
+      }, 280);
+    },
+  },
+};
+</script>
   
   <style lang="scss" scoped>
-  .cpm-mask {
-    position: fixed;
-    z-index: 99;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+.cpm-mask {
+  position: fixed;
+  z-index: 99;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.cpm_popup_in {
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.cpm_popup_out {
+  animation: fade-out 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+// 进入动画效果
+@keyframes scale-in-center {
+  0% {
+    transform: scale(0);
+    opacity: 1;
   }
-  
-  .cpm_popup_in {
-    animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  .cpm_popup_out {
-    animation: fade-out 0.28s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
   }
-  
-  // 进入动画效果
-  @keyframes scale-in-center {
-    0% {
-      transform: scale(0);
-      opacity: 1;
-    }
-  
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
+  100% {
+    opacity: 0;
   }
-  @keyframes fade-out{
-    0%{
-      opacity: 1;
-    }
-    100%{
-      opacity: 0;
-    }
-  }
-  </style>
+}
+</style>
