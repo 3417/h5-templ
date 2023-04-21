@@ -26,10 +26,6 @@ export default {
       type: String,
       default: "rgba(0,0,0,.85)",
     },
-    isOwnDestory: {
-      type: Boolean,
-      default: false,
-    },
     rData: {
       type: Object,
       default: () => {
