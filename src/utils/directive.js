@@ -277,6 +277,97 @@ const countdown = {
   }
 }
 
+
+
+/**
+ * 水波纹按钮
+ * 来源：Rubik UI
+ * 使用方式：
+ * v-wave="{color:'purple'}" 指令 value 对象的 color 
+ * 对应水波颜色[black,silver,gray,white,maroon,red,purple,fuchsia,green,lime,olive,yellow,navy,blue,teal,aqua]   
+ * v-wave.light 浅色水波 此时 value 对象的 color 无效
+ * 注意：元素在显示水波时会添加样式 position: relative !important
+ * 
+*/
+const style = (el,value)=>{
+  ['transform','webkitTransform'].forEach(i=>{
+    el.style[i] = value;
+  })
+}
+
+const wavesFn = {
+  show(e,el,binding){
+    const doc = document;
+    const container = doc.createElement('span');
+    const animation = doc.createElement('span');
+    const color = binding.value ? binding.value.color : false;
+    const isLight = binding.modifiers.light;
+    container.appendChild(animation);
+    container.className = 'waves-container';
+    el.classList.add('relative');
+    if(isLight){
+      container.classList.add('waves-light')
+    }
+    if(!isLight && color){
+      container.classList.add(`${color}  `);
+    }
+    animation.className = 'waves-animation';
+    animation.style.width = `${el.clientWidth * 2}px`;
+    animation.style.height = animation.style.width;
+
+    el.appendChild(container);
+
+    const offset = el.getBoundingClientRect();
+    const x = e.x - offset.left;
+    const y = e.y - offset.top;
+
+    animation.classList.add('waves-animation-enter');
+    animation.classList.add('waves-animation-visible');
+    style(animation,`translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0) scale3d(.001,.001,1)`);
+    animation.dataset.activated = Date.now();
+
+     setTimeout(() => {
+      animation.classList.remove('waves-animation-enter');
+      style(animation,`translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0)`)
+     }, 0);
+  },
+  hide(el){
+    const waves = el.getElementsByClassName('waves-animation');
+    if(waves.length === 0) return;
+    const animation = waves[waves.length - 1];
+    const diff = Date.now() - Number(animation.dataset.activated);
+    let delay = 500 - diff;
+    delay = delay < 0 ? 0 : diff;
+
+    setTimeout(() => {
+      animation.classList.remove('waves-animation-visible');
+      setTimeout(() => {
+        animation.parentNode.remove();
+      }, 300);
+    }, delay);
+  }
+}
+
+const waves = {
+  bind(el,binding,vnode){
+    if('ontouchstart' in window){
+      el.addEventListener('touchend',_=>wavesFn.hide(el),false);
+      el.addEventListener('touchcancel',_=>wavesFn.hide(el),false);
+    }
+    el.addEventListener('mousedown', e => wavesFn.show(e, el, binding), false)
+    el.addEventListener('mouseup', _ => wavesFn.hide(el), false)
+    el.addEventListener('mouseleave', _ => wavesFn.hide(el), false)
+  },
+  unbind(el,binding){
+    el.removeEventListener('mousedown',e=>wavesFn.show(e,el,binding),false);
+    el.removeEventListener('touchend',e=>wavesFn.hide(el),false);
+    el.removeEventListener('touchcancel',e=>wavesFn.hide(el),false);
+    el.removeEventListener('mouseup',e=>wavesFn.hide(el),false);
+    el.removeEventListener('mouseleave',e=>wavesFn.hide(el),false);
+  }
+  
+}
+
 const Plugin = {
   fixed,
   eruda,
@@ -286,7 +377,8 @@ const Plugin = {
   clickOutSide,
   h5drag,
   waterMark,
-  countdown
+  countdown,
+  waves
 }
 
 export default (app) => {

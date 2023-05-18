@@ -1,17 +1,165 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 //解决IOS滚动条卡住
-body,html{
-    -webkit-overflow-scrolling: touch; 
+body,
+html {
+    -webkit-overflow-scrolling: touch;
 }
-body{
+
+body {
     -webkit-text-size-adjust: 100% !important;
 }
 
 // 提示弹窗层级
-.zPopup{
-    z-index: 99999!important;
+.zPopup {
+    z-index: 99999 !important;
+}
+
+
+
+// 水波纹指令相关样式
+$waves-container-color: #fff;
+$waves-animation-background: white;
+$waves-animation-transition: .7s transform cubic-bezier(.2, .4, .4, .9), .3s opacity cubic-bezier(.2, .4, .4, .1);
+$waves-animation-visible-opacity: .3;
+
+.waves-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    z-index: 0;
+    color: $waves-container-color;
+    pointer-events: none;
+}
+.waves-light {
+    color: rgba(255, 255, 255, .45);
+}
+
+.waves-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    background: $waves-animation-background;
+    opacity: 0;
+    transition: $waves-animation-transition;
+    pointer-events: none;
+    overflow: hidden;
+    will-change: opacity;
+
+    &-enter {
+        transition: none
+    }
+
+    &-visible {
+        opacity: $waves-animation-visible-opacity;
+    }
+}
+
+.relative {
+    position: relative !important;
+}
+
+
+.black-text {
+    .waves-animation {
+        background: black
+    }
+}
+
+.silver-text {
+    .waves-animation {
+        background: silver
+    }
+}
+
+.gray-text {
+    .waves-animation {
+        background: gray;
+    }
+}
+
+.white-text {
+    .waves-animation {
+        background: white;
+    }
+}
+
+.maroon-text {
+    .waves-animation {
+        background: maroon;
+    }
+}
+
+.red-text {
+    .waves-animation {
+        background: red;
+    }
+}
+
+.purple-text {
+    .waves-animation {
+        background: purple;
+    }
+}
+
+.fuchsia-text {
+    .waves-animation {
+        background: fuchsia;
+    }
+}
+
+.green-text {
+    .waves-animation {
+        background: green;
+    }
+}
+
+.lime-text {
+    .waves-animation {
+        background: lime;
+    }
+}
+
+.olive-text {
+    .waves-animation {
+        background: olive;
+    }
+}
+
+.yellow-text {
+    .waves-animation {
+        background: yellow;
+    }
+}
+
+.navy-text {
+    .waves-animation {
+        background: navy;
+    }
+}
+
+.blue-text {
+    .waves-animation {
+        background: blue;
+    }
+}
+
+.teal-text {
+    .waves-animation {
+        background: teal;
+    }
+}
+
+.aqua-text {
+    .waves-animation {
+        background: aqua;
+    }
 }
