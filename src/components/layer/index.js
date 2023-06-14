@@ -50,13 +50,14 @@ export default {
         }
         // 多个弹窗依次销毁
         const _destory = () => {
-            if ($eles.length > 1 && !$ele) {
-                $ele = $eles[$eles.length - 2];
-                $eles = $eles.splice($eles.length - 1, 1);
-            }
-            $ele.popupShow = false;
             $ele.onClose();
             $ele = null;
+            if ($eles.length > 1) {
+                $ele = $eles[$eles.length - 2];
+                $eles.splice($eles.length - 1, 1);
+            }else if($eles.length == 1){
+                $eles = [];
+            }
         }
         // 销毁全部的弹窗
         const destoryAll = () => {

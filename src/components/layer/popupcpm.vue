@@ -80,6 +80,7 @@ export default {
     destory() {
       setTimeout(() => {
         this.$destroy();
+        console.log(this.$el);
         document.body.removeChild(this.$el);
       }, 280);
     },
