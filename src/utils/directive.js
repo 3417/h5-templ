@@ -29,7 +29,7 @@ const eruda = {
             window.eruda && window.eruda.init();
           }
         };
-        script.src = '//cdn.bootcss.com/eruda/1.2.4/eruda.min.js';
+        script.src = '//cdn.jsdelivr.net/npm/eruda';
         head.appendChild(script);
       }
     }
@@ -115,10 +115,10 @@ const clickOutSide = {
       if (el.contains(e.target)) {
         return false;
       } else {
-        if(binding.value){
+        if (binding.value) {
           vnode.context[binding.value] ? vnode.context[binding.value] = false : ''
-        }else{
-          vnode.context.isShow ? vnode.context.isShow = false :''
+        } else {
+          vnode.context.isShow ? vnode.context.isShow = false : ''
         }
       }
     }
@@ -198,7 +198,7 @@ const waterMark = {
       content: '机密', //水印文字
       rotate: -14 //旋转角度
     };
-    const props =  Object.assign(_define, binding.value)
+    const props = Object.assign(_define, binding.value)
     const { container, width, height, textAlign, verticalAlign, font, fillStyle, content, rotate } = props;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -252,12 +252,12 @@ const waterMark = {
 // 倒计时 v-countdown[30]="{fn:<fn>,msg}",组件中的fn方法需要使用promise返回值
 const countdown = {
   inserted(el, binding, vnode) {
-    console.log(el,binding,vnode);
+    console.log(el, binding, vnode);
     let flag = false, that = vnode.context;  //that为当前组件的this
     el.onclick = async function () {
       let getMsg = await binding.value.fn();
-      console.log(getMsg,flag)
-      if(!getMsg || flag){return};
+      console.log(getMsg, flag)
+      if (!getMsg || flag) { return };
       flag = true;
       let i = binding.arg || 60;  //获取倒计时 时间
       el.innerHTML = i + 's';
@@ -277,6 +277,70 @@ const countdown = {
   }
 }
 
+// 长按出现调试工具 v-longpress:3000="()=>{}"(eruda调试工具)
+const longpress = {
+  inserted(el, binding, vnode) {
+    const onEruda = () => {
+        if (window.eruda) { return };
+        let head = document.getElementsByTagName('head')[0];
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onload = script.onreadystatechange = function () {
+          if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+            window.eruda && window.eruda.init();
+          }
+        };
+        script.src = '//cdn.jsdelivr.net/npm/eruda';
+        head.appendChild(script);
+    }
+    const handleFn = (e)=>{
+      binding.value(e);
+    }
+    let s = binding.arg * 1 || 3000;
+    if(typeof binding.value !== 'function'){
+      throw 'callback must be function'
+    }
+    el._pressTimer = null;
+    el.style.userSelect = 'none';
+    el._start = (e)=>{
+      let flag1 = e.type === 'mousedown' &&e.button && e.button !== 0;
+      let flag2 = e.type === 'touchstart'&&e.touches &&e.touches.length > 1;
+      if(flag1 || flag2){return}
+
+      if(!el._pressTimer){
+        el._pressTimer = setTimeout(() => {
+          onEruda();
+          handleFn();// 返回一个事件
+        }, s);
+      }
+    }
+
+    el._cancel = (e)=>{
+      if(el._pressTimer){
+        clearTimeout(el._pressTimer);
+        el._pressTimer = null;
+      }
+    }
+
+    el.addEventListener('mousedown',el._start);
+    el.addEventListener('touchstart',el._start);
+    el.addEventListener('click',el._cancel);
+    el.addEventListener('mouseout',el._cancel);
+    el.addEventListener('touchend',el._cancel);
+    el.addEventListener('touchcancel',el._cancel);
+  },
+  unbind(el, binding) {
+    // 移除计时监听
+    el.removeEventListener('mousedown', el._start)
+    el.removeEventListener('touchstart', el._start)
+    // 移除取消监听
+    el.removeEventListener('click', el._cancel)
+    el.removeEventListener('mouseout', el._cancel)
+    el.removeEventListener('touchend', el._cancel)
+    el.removeEventListener('touchcancel', el._cancel)
+  }
+}
+
 
 
 /**
@@ -289,14 +353,14 @@ const countdown = {
  * 注意：元素在显示水波时会添加样式 position: relative !important
  * 
 */
-const style = (el,value)=>{
-  ['transform','webkitTransform'].forEach(i=>{
+const style = (el, value) => {
+  ['transform', 'webkitTransform'].forEach(i => {
     el.style[i] = value;
   })
 }
 
 const wavesFn = {
-  show(e,el,binding){
+  show(e, el, binding) {
     const doc = document;
     const container = doc.createElement('span');
     const animation = doc.createElement('span');
@@ -305,10 +369,10 @@ const wavesFn = {
     container.appendChild(animation);
     container.className = 'waves-container';
     el.classList.add('relative');
-    if(isLight){
+    if (isLight) {
       container.classList.add('waves-light')
     }
-    if(!isLight && color){
+    if (!isLight && color) {
       container.classList.add(`${color}  `);
     }
     animation.className = 'waves-animation';
@@ -323,17 +387,17 @@ const wavesFn = {
 
     animation.classList.add('waves-animation-enter');
     animation.classList.add('waves-animation-visible');
-    style(animation,`translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0) scale3d(.001,.001,1)`);
+    style(animation, `translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0) scale3d(.001,.001,1)`);
     animation.dataset.activated = Date.now();
 
-     setTimeout(() => {
+    setTimeout(() => {
       animation.classList.remove('waves-animation-enter');
-      style(animation,`translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0)`)
-     }, 0);
+      style(animation, `translate3d(-50%,-50%,0) translate3d(${x}px,${y}px,0)`)
+    }, 0);
   },
-  hide(el){
+  hide(el) {
     const waves = el.getElementsByClassName('waves-animation');
-    if(waves.length === 0) return;
+    if (waves.length === 0) return;
     const animation = waves[waves.length - 1];
     const diff = Date.now() - Number(animation.dataset.activated);
     let delay = 500 - diff;
@@ -349,23 +413,22 @@ const wavesFn = {
 }
 
 const waves = {
-  bind(el,binding,vnode){
-    if('ontouchstart' in window){
-      el.addEventListener('touchend',_=>wavesFn.hide(el),false);
-      el.addEventListener('touchcancel',_=>wavesFn.hide(el),false);
+  bind(el, binding, vnode) {
+    if ('ontouchstart' in window) {
+      el.addEventListener('touchend', _ => wavesFn.hide(el), false);
+      el.addEventListener('touchcancel', _ => wavesFn.hide(el), false);
     }
     el.addEventListener('mousedown', e => wavesFn.show(e, el, binding), false)
     el.addEventListener('mouseup', _ => wavesFn.hide(el), false)
     el.addEventListener('mouseleave', _ => wavesFn.hide(el), false)
   },
-  unbind(el,binding){
-    el.removeEventListener('mousedown',e=>wavesFn.show(e,el,binding),false);
-    el.removeEventListener('touchend',e=>wavesFn.hide(el),false);
-    el.removeEventListener('touchcancel',e=>wavesFn.hide(el),false);
-    el.removeEventListener('mouseup',e=>wavesFn.hide(el),false);
-    el.removeEventListener('mouseleave',e=>wavesFn.hide(el),false);
+  unbind(el, binding) {
+    el.removeEventListener('mousedown', e => wavesFn.show(e, el, binding), false);
+    el.removeEventListener('touchend', e => wavesFn.hide(el), false);
+    el.removeEventListener('touchcancel', e => wavesFn.hide(el), false);
+    el.removeEventListener('mouseup', e => wavesFn.hide(el), false);
+    el.removeEventListener('mouseleave', e => wavesFn.hide(el), false);
   }
-  
 }
 
 const Plugin = {
@@ -378,7 +441,8 @@ const Plugin = {
   h5drag,
   waterMark,
   countdown,
-  waves
+  waves,
+  longpress
 }
 
 export default (app) => {
