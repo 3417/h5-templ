@@ -79,7 +79,7 @@ module.exports = defineConfig({
       nodeEnv: false,
       minimizer: [
         new TerserPlugin({
-          extractComments: false
+          extractComments: false,
         })
       ]
     }
