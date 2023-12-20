@@ -249,7 +249,7 @@ const waterMark = {
   }
 }
 
-// 倒计时 v-countdown[30]="{fn:<fn>,msg}",组件中的fn方法需要使用promise返回值
+// 倒计时 v-countdown[30]="{fn:<fn>,msg}",组件中的fn方法需要使用promise返回值（按需要添加自己的防抖或者节流事件）
 const countdown = {
   inserted(el, binding, vnode) {
     console.log(el, binding, vnode);
