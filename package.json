@@ -1,7 +1,7 @@
 {
-  "name": "demos",
-  "version": "v0.0.1",
-  "description":"这是描述信息",
+  "name": "{{name}}",
+  "version": "{{version}}",
+  "description": "{{description}}",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
