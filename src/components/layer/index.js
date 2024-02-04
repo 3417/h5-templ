@@ -1,9 +1,9 @@
   /**
    * 1.使用方法
-   * this.vshow(String/Object)  //预留了String类型，目前未使用
+   * this.vshow(Object)
    * 传入的需要页面展示的数据放在rData对象中，componenTag为传入的组件
    * 2.接受参数
-   * 接受参数：String,Object
+   * 接受参数：Object
    * Object:
    *    1.componenTag:传入自定义的组件
    *    2.maskBgColor:蒙层背景色（已默认可不传）
@@ -72,7 +72,7 @@ export default {
             if(!opts){return};
             switch (typeof opts) {
                 case 'string':
-                    console.log('Oops... is String');
+                    throw new Error('传入参数错误，请传入对象');
                     break;
                 case 'object':
                     Mask(opts);

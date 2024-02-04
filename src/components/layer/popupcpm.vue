@@ -1,5 +1,5 @@
 <template>
-  <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }">
+  <div class="cpm-mask" :style="{ backgroundColor: maskBgColor }" :id="'modal_'+new Date().getTime()">
     <div
       class="cpm_popup cpm_popup_in"
       :class="{ cpm_popup_out: !popupShow }"
@@ -51,6 +51,7 @@ export default {
           "position:fixed;overflow:hidden;width:100%;top:-" + scrollTop + "px;";
       },
       unbind() {
+        if(document.querySelectorAll('[id^=modal]').length > 1){ return}
         let body = document.body;
         body.style.position = "";
         let top = body.style.top;
@@ -89,7 +90,7 @@ export default {
 </script>
   
   <style lang="scss" scoped>
-.cpm-mask {
+[class^="cpm-mask"] {
   position: fixed;
   z-index: 99;
   right: 0;
